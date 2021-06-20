@@ -110,30 +110,30 @@ IF (Test-Path -Path $LibGcc_S_Seh) {
 
 Write-Host "   INFO - Creating the .msi Package"
 cd $ScriptRoot
-IF ( !(Test-Path -Path output )) { New-Item -ItemType directory -Path output | Out-Null }
+IF ( !(Test-Path -Path Windows )) { New-Item -ItemType directory -Path Windows | Out-Null }
 $Wixtoolpath = [Environment]::GetEnvironmentVariable('WIX', 'Machine') + "bin"
 & $Wixtoolpath\heat.exe dir $PrefixPath\bin -dr DIR_BIN -cg FilesBin -gg -g1 -sfrag -srd -suid -ke -sw5150 -var "var.BinDir" -out files-bin.wxs
 & $Wixtoolpath\heat.exe dir $PrefixPath\include -dr DIR_INCLUDE -cg FilesInclude -gg -g1 -sfrag -srd -ke -sw5150 -var "var.IncludeDir" -out files-include.wxs
 & $Wixtoolpath\heat.exe dir $PrefixPath\share -dr DIR_SHARE -cg FilesShare -gg -g1 -sfrag -srd -ke -sw5150 -var "var.ShareDir" -out files-share.wxs
 & $Wixtoolpath\candle.exe files-bin.wxs files-include.wxs files-share.wxs -dBinDir="$PrefixPath\bin" -dIncludeDir="$PrefixPath\include" -dShareDir="$PrefixPath\share"
 & $Wixtoolpath\candle.exe star.wxs -dSTARVERSION="$RAKUDO_VER"
-& $Wixtoolpath\light.exe -b $PrefixPath -ext WixUIExtension files-bin.wixobj files-include.wixobj files-share.wixobj star.wixobj -sw1076 -o "output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
-Write-Host "   INFO - .msi Package `"output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi`" created"
+& $Wixtoolpath\light.exe -b $PrefixPath -ext WixUIExtension files-bin.wixobj files-include.wixobj files-share.wixobj star.wixobj -sw1076 -o "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
+Write-Host "   INFO - .msi Package `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi`" created"
 
 # SHA256, create a hash sum 
-Write-Host "   INFO - Creating the checksum file `"output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt`""
-& CertUtil -hashfile "output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi" SHA256 | findstr /V ":" > "output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt"
+Write-Host "   INFO - Creating the checksum file `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt`""
+& CertUtil -hashfile "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi" SHA256 | findstr /V ":" > "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt"
 
 
 # GPG signature
-IF ($sign) { 
+IF ( $sign ) {
   Write-Host "   INFO - gpg signing the .msi package"
-	& gpg --armor --detach-sig "output\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
+	& gpg --armor --detach-sig "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
 }
 
 IF ( ! $keep ) {
   Write-Host "   INFO - Cleaning up..."
-  Remove-Item files-*.wxs, *.wixobj, "output\rakudo-star-${RAKUDO_VER}-win-x86_64-(JIT).wixpdb"
+  Remove-Item files-*.wxs, *.wixobj, "Windows\rakudo-star-${RAKUDO_VER}-win-x86_64-(JIT).wixpdb"
   Remove-Item -Recurse -Force "rakudo-${RAKUDO_VER}"
   Remove-Item -Recurse -Force $PrefixPath
   Remove-Item RAKUDO-${RAKUDO_VER}_build.log

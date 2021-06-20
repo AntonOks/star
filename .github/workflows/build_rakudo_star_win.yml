@@ -7,7 +7,7 @@ on: [create, workflow_dispatch]
 #  [push, create, workflow_dispatch]
 jobs:
   # This workflow contains a single job called "build ..."
-  build Rakudo-Star Windows MSI package:
+  build_Rakudo-Star_Windows_MSI_package:
     # Windows-latest has almost all requirements to build rakudo-star-win
     runs-on: windows-latest
     steps:
