@@ -1,7 +1,7 @@
 name: Release
 
-on:
-  push: workflow_dispatch
+on: [create, workflow_dispatch]
+#  push:
 #    tags:
 #      - '*'
 #      - '!*-rc*'
