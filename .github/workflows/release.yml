@@ -1,10 +1,10 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - '*'
-      - '!*-rc*'
+  push: workflow_dispatch
+#    tags:
+#      - '*'
+#      - '!*-rc*'
 
 jobs:
   release:
