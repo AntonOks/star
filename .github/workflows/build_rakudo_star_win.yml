@@ -16,7 +16,7 @@ jobs:
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v3
       - name: Run the build-with-choco.ps1 script
-        run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\build-with-choco.ps1"
+        run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1"
       - name: Upload output artifacts
         uses: actions/upload-artifact@v2
         with:
