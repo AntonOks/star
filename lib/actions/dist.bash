@@ -30,11 +30,11 @@ action() {
 	## takes YEAR.month else, so something like 2020.08
 	if [[ "$(curl -s https://github.com/rakudo/rakudo/releases/latest)" =~ /tag/([0-9]+.[0-9]+)(.[0-9]+) ]]
 	then
-		RAKUDO_LATEST="${BASH_REMATCH[1]}${BASH_REMATCH[1]}"
+		RAKUDO_LATEST="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
 	else
 		RAKUDO_LATEST="$(datetime %Y.%m)"
 	fi
-	version="${1:-$(RAKUDO_LATEST)}"
+	version="${1:-$RAKUDO_LATEST}"
 	WORKDIR="$BASEDIR/tmp/rakudo-star-$version"
 
 	debug "SOURCE_DATE_EPOCH set to $SOURCE_DATE_EPOCH"
@@ -97,6 +97,12 @@ action() {
 }
 
 dist_include() {
+	if [[ ! -e "${BASEDIR}$1" ]]
+	then
+		crit "\"${BASEDIR}$1\" expected but not found, you may need to run \"rstar fetch\" first"
+		exit 7
+	fi
+	
 	mkdir -p -- "$(dirname "${WORKDIR}$1")"
 	cp -r -- "${BASEDIR}$1" "${WORKDIR}$1"
 }
