@@ -10,6 +10,7 @@ RSTAR_DEPS_BIN+=(
 	sha384sum
 	sha512sum
 	tar
+	curl
 )
 
 action() {
