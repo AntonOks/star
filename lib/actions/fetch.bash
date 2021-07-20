@@ -61,13 +61,14 @@ download_core() {
 		else
 			warn "\"-l\" option set but \"$TMP_VERSION\" doesn't match an expected ${1} GitHub release tag"
 			warn "falling back to the version given in \"fetch_core.txt\""
+			VERSION="$(config_etc_kv "fetch_core.txt" "${1}_version")"
 		fi
 	else
 		VERSION="$(config_etc_kv "fetch_core.txt" "${1}_version")"
 	fi
 	
-	source="$(config_etc_kv "fetch_core.txt" "${1}_url" | sed "s/%s/$version/g")"
-	destination="$BASEDIR/src/$1-$version"
+	source="$(config_etc_kv "fetch_core.txt" "${1}_url" | sed "s/%s/$VERSION/g")"
+	destination="$BASEDIR/src/$1-$VERSION"
 
 	if [[ -d $destination ]]
 	then
