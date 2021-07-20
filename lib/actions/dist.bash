@@ -16,7 +16,7 @@ RSTAR_DEPS_BIN+=(
 action() {
 	local LC_ALL
 	local SOURCE_DATE_EPOCH
-	local RAKUDO_LATEST
+	local RKD_LATEST
 	local basename
 	local tarball
 	local version
@@ -30,11 +30,11 @@ action() {
 	## takes YEAR.month else, so something like 2020.08
 	if [[ "$(curl -s https://github.com/rakudo/rakudo/releases/latest)" =~ /tag/([0-9]+.[0-9]+)(.[0-9]+) ]]
 	then
-		RAKUDO_LATEST="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
+		RKD_LATEST="${BASH_REMATCH[1]}${BASH_REMATCH[2]}"
 	else
-		RAKUDO_LATEST="$(datetime %Y.%m)"
+		RKD_LATEST="$(datetime %Y.%m)"
 	fi
-	version="${1:-$RAKUDO_LATEST}"
+	version="${1:-$RKD_LATEST}"
 	WORKDIR="$BASEDIR/tmp/rakudo-star-$version"
 
 	debug "SOURCE_DATE_EPOCH set to $SOURCE_DATE_EPOCH"
