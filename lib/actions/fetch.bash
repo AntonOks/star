@@ -53,7 +53,7 @@ download_core() {
 
 	if [[ $RKD_VERSION_GH_LATEST ]]
 	then
-		TMP_VERSION="$(config_etc_kv "fetch_core.txt" "${1}_url" | sed -E "s|(https://github.com/.+/.+/releases)/download/%s/rakudo-%s.tar.gz|\1/latest|")"
+		TMP_VERSION="$(config_etc_kv "fetch_core.txt" "${1}_url" | sed -E "s|(https://github.com/.+/.+/releases)/download/.+|\1/latest|")"
 		
 		if [[ "$(curl -s $TMP_VERSION)" =~ /tag/([0-9]+.[0-9]+)(.[0-9]+) ]]
 		then
