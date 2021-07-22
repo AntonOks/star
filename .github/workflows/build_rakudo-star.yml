@@ -44,8 +44,8 @@ jobs:
         run: |
           pwd
           ls -lad *
-          ./bin/rstar fetch -l
-      - name: Upload akudo-Star Linux artifacts
+          ./bin/rstar dist
+      - name: Upload Rakudo-Star Linux artifacts
         uses: actions/upload-artifact@v2
         with:
           name: Upload output directory
