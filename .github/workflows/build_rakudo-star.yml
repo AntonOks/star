@@ -7,8 +7,6 @@ on: [create, workflow_dispatch]
 
 #  [push, create, workflow_dispatch]
 jobs:
-  # This workflow contains a single job called "build ..."
-  
   build_Rakudo-Star_Windows_MSI_package:
     # Windows-latest has almost all requirements to build rakudo-star-win
     runs-on: windows-latest
@@ -49,10 +47,14 @@ jobs:
       
   upload_Rakudo-Star_artifacts:
     needs: [build_Rakudo-Star_Windows_MSI_package, build_Rakudo-Star_Linux_source]
-      - name: Release Rakudo-Star Windows MSI package
-        uses: ncipollo/release-action@v1
-        with:
-          allowUpdates: true
-          artifactErrorsFailBuild: true
-          artifacts: "tools/build/binary-release/Windows/*,dist/*"
-          token: ${{ secrets.GITHUB_TOKEN }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: Release Rakudo-Star Windows MSI package
+      uses: ncipollo/release-action@v1
+      with:
+        allowUpdates: true
+        artifactErrorsFailBuild: true
+        artifacts: "tools/build/binary-release/Windows/*,dist/*"
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+
