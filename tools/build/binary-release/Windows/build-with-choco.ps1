@@ -135,8 +135,8 @@ IF ( ! $keep ) {
   Write-Host "   INFO - Cleaning up..."
   Remove-Item files-*.wxs, *.wixobj, "Windows\rakudo-star-${RAKUDO_VER}-win-x86_64-(JIT).wixpdb"
   Remove-Item -Recurse -Force "rakudo-${RAKUDO_VER}"
+  #Remove-Item rakudo-$RAKUDO_VER\RAKUDO-${RAKUDO_VER}_build.log
   Remove-Item -Recurse -Force $PrefixPath
-  Remove-Item RAKUDO-${RAKUDO_VER}_build.log
   Write-Host "   INFO - ALL done in dir `"", (pwd).Path, "`""
 }
 
