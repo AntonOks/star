@@ -34,9 +34,12 @@ jobs:
           sudo apt update
           sudo apt install -y cpanminus curl gcc make
           cpanm -v ExtUtils::Command Pod::Usage
-      - name: System Information
+      - name: RSTAR System Information
+        env: RSTAR_DEBUG: "1"
         run: ./bin/rstar sysinfo
-      - name: Fetch
+      - name: RSTAR Fetch Components
+        run: ./bin/rstar fetch -l
+      - name: Create RSTAR Distrubution
         run: ./bin/rstar fetch -l
       - name: Upload akudo-Star Linux artifacts
         uses: actions/upload-artifact@v2
