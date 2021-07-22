@@ -1,0 +1,58 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)
+
+# Triggers the workflow on new tag's or branches
+on: [create, workflow_dispatch]
+
+#  [push, create, workflow_dispatch]
+jobs:
+  # This workflow contains a single job called "build ..."
+  
+  build_Rakudo-Star_Windows_MSI_package:
+    # Windows-latest has almost all requirements to build rakudo-star-win
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Setup VS Dev Environment
+        uses: seanmiddleditch/gha-setup-vsdevenv@v3
+      - name: Run the build-with-choco.ps1 script
+        run: pwsh -command ".\$GITHUB_WORKSPACE\tools\build\binary-release\Windows\build-with-choco.ps1"
+      - name: Upload Rakudo-Star Windows artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Upload output directory
+          path: tools/build/binary-release/Windows/
+          if-no-files-found: error
+          
+  build_Rakudo-Star_Linux_source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Prepare
+        run: |
+          sudo apt update
+          sudo apt install -y cpanminus curl gcc make
+          cpanm -v ExtUtils::Command Pod::Usage
+      - name: System Information
+        run: ./bin/rstar sysinfo
+      - name: Fetch
+        run: ./bin/rstar fetch -l
+      - name: Upload akudo-Star Linux artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: Upload output directory
+          path: dist/
+          if-no-files-found: error
+      
+  upload_Rakudo-Star_artifacts:
+    needs: [build_Rakudo-Star_Windows_MSI_package, build_Rakudo-Star_Linux_source]
+      - name: Release Rakudo-Star Windows MSI package
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: "tools/build/binary-release/Windows/*,dist/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
