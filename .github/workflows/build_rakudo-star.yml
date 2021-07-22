@@ -41,7 +41,10 @@ jobs:
       - name: RSTAR Fetch Components
         run: ./bin/rstar fetch -l
       - name: Create RSTAR Distrubution
-        run: ./bin/rstar fetch -l
+        run: |
+          pwd
+          ls -lad *
+          ./bin/rstar fetch -l
       - name: Upload akudo-Star Linux artifacts
         uses: actions/upload-artifact@v2
         with:
