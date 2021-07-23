@@ -1,11 +1,12 @@
 name: Release
 
 on:
-  #push:
-  off:
-    tags:
-      - '*'
-      - '!*-rc*'
+  push:
+    branches-ignore: #disable action
+    - '**'
+    #tags:
+    #  - '*'
+    #  - '!*-rc*'
 
 jobs:
   release:
