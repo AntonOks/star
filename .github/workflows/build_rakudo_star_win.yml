@@ -2,8 +2,16 @@
 
 name: Build Rakudo Star for Windows
 
-# Triggers the workflow on new tag's or branches
-on: [create, workflow_dispatch]
+# Set it to create to trigger the workflow on new tag's or branches
+on:
+  push:
+    branches-ignore: #disable action
+    - '**'
+  #create:
+  #    tags:
+  #    - '*'
+  #    - '!*-rc*'
+
 #  [push, create, workflow_dispatch]
 jobs:
   # This workflow contains a single job called "build ..."
