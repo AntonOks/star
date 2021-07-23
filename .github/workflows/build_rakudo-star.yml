@@ -59,6 +59,8 @@ jobs:
     - name: Release Rakudo-Star Windows MSI and Linux RSTAR releases
       uses: ncipollo/release-action@v1
       with:
+        # ncipollo/release-action needs a tag! Either a usual "GIT TAG" or an dedicated TAG, see below!
+        #tag: 2021.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
         allowUpdates: true
         artifactErrorsFailBuild: true
         artifacts: "tools/build/binary-release/Windows/*,dist/*"
