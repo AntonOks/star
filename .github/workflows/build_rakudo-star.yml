@@ -2,9 +2,11 @@
 
 name: Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)
 
-# Triggers the workflow on new tag's or branches
-on: [create]
-#  [push, create, workflow_dispatch]
+# Create triggers the workflow on new tag's or branches
+on:
+  create: #[push, create, workflow_dispatch]
+    tags:
+    - 2[0-9]+.[0-1][0-1]'**'
 
 jobs:
   build_Rakudo-Star_Windows_MSI_package:
