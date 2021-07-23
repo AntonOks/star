@@ -1,10 +1,11 @@
 name: Release
 
-on: [create, workflow_dispatch]
-#  push:
-#    tags:
-#      - '*'
-#      - '!*-rc*'
+on:
+  #push:
+  off:
+    tags:
+      - '*'
+      - '!*-rc*'
 
 jobs:
   release:
