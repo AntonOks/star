@@ -81,7 +81,7 @@ jobs:
         
     - name: List my stuff
       run: |
-        ls -lad *
+        ls -laR
     
     - name: Release Rakudo-Star Windows MSI and Linux RSTAR releases
       uses: ncipollo/release-action@v1
