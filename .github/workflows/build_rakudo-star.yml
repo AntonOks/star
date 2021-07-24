@@ -13,7 +13,6 @@ jobs:
     # Windows-latest has almost all requirements to build rakudo-star-win
     
     runs-on: windows-latest
-    
     steps:
     
       - name: Checkout repository

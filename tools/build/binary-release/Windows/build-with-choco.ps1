@@ -117,23 +117,23 @@ $Wixtoolpath = [Environment]::GetEnvironmentVariable('WIX', 'Machine') + "bin"
 & $Wixtoolpath\heat.exe dir $PrefixPath\share -dr DIR_SHARE -cg FilesShare -gg -g1 -sfrag -srd -ke -sw5150 -var "var.ShareDir" -out files-share.wxs
 & $Wixtoolpath\candle.exe files-bin.wxs files-include.wxs files-share.wxs -dBinDir="$PrefixPath\bin" -dIncludeDir="$PrefixPath\include" -dShareDir="$PrefixPath\share"
 & $Wixtoolpath\candle.exe star.wxs -dSTARVERSION="$RAKUDO_VER"
-& $Wixtoolpath\light.exe -b $PrefixPath -ext WixUIExtension files-bin.wixobj files-include.wixobj files-share.wixobj star.wixobj -sw1076 -o "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
-Write-Host "   INFO - .msi Package `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi`" created"
+& $Wixtoolpath\light.exe -b $PrefixPath -ext WixUIExtension files-bin.wixobj files-include.wixobj files-share.wixobj star.wixobj -sw1076 -o "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi"
+Write-Host "   INFO - .msi Package `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi`" created"
 
 # SHA256, create a hash sum 
-Write-Host "   INFO - Creating the checksum file `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt`""
-& CertUtil -hashfile "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi" SHA256 | findstr /V ":" > "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi.sha256.txt"
+Write-Host "   INFO - Creating the checksum file `"Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi.sha256.txt`""
+& CertUtil -hashfile "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi" SHA256 | findstr /V ":" > "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi.sha256.txt"
 
 
 # GPG signature
 IF ( $sign ) {
   Write-Host "   INFO - gpg signing the .msi package"
-	& gpg --armor --detach-sig "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-(JIT).msi"
+	& gpg --armor --detach-sig "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi"
 }
 
 IF ( ! $keep ) {
   Write-Host "   INFO - Cleaning up..."
-  Remove-Item files-*.wxs, *.wixobj, "Windows\rakudo-star-${RAKUDO_VER}-win-x86_64-(JIT).wixpdb"
+  Remove-Item files-*.wxs, *.wixobj, "Windows\rakudo-star-${RAKUDO_VER}-win-x86_64-msvc.wixpdb"
   Remove-Item -Recurse -Force "rakudo-${RAKUDO_VER}"
   #Remove-Item rakudo-$RAKUDO_VER\RAKUDO-${RAKUDO_VER}_build.log
   Remove-Item -Recurse -Force $PrefixPath
