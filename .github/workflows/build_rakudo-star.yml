@@ -43,10 +43,7 @@ jobs:
       - name: Fetch RSTAR Components
         run: ./bin/rstar fetch -l
       - name: Create RSTAR Distrubution
-        run: |
-          pwd
-          ls -laR
-          ./bin/rstar dist
+        run: ./bin/rstar dist
     - name: List my stuff
       run: |
         ls -laR
