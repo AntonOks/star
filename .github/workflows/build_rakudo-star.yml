@@ -44,9 +44,9 @@ jobs:
         run: ./bin/rstar fetch -l
       - name: Create RSTAR Distrubution
         run: ./bin/rstar dist
-    - name: List my stuff
-      run: |
-        ls -laR
+      - name: List my stuff
+        run: |
+          ls -laR
       - name: Upload Rakudo-Star Linux artifacts
         uses: actions/upload-artifact@v2
         with:
