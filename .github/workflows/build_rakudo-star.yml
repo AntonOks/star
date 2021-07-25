@@ -45,7 +45,7 @@ jobs:
           sudo apt update
           sudo apt install -y cpanminus curl gcc make
           cpanm -v ExtUtils::Command Pod::Usage
-          
+      
       - name: Collect RSTAR System Informations
         env:
           RSTAR_DEBUG: "1"
@@ -53,13 +53,13 @@ jobs:
         
       - name: Fetch RSTAR Components
         run: ./bin/rstar fetch -l
-        
+      
       - name: Create RSTAR Distrubution
         run: |
           pwd
           ls -laR
           ./bin/rstar dist
-        
+      
     - name: List my stuff
       run: |
         ls -laR
