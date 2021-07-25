@@ -59,7 +59,7 @@ jobs:
           pwd
           ls -laR
           ./bin/rstar dist
-          
+        
     - name: List my stuff
       run: |
         ls -laR
