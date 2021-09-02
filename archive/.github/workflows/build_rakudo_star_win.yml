@@ -4,9 +4,9 @@ name: Build Rakudo Star for Windows
 
 # Set it to create to trigger the workflow on new tag's or branches
 on:
-  push:
-    branches-ignore: #disable action
-    - '**'
+  create: #[push, create, workflow_dispatch]
+    tags:
+    - 2[0-9]+.[0-1][0-1]'**'
   #create:
   #    tags:
   #    - '*'
