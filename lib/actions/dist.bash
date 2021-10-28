@@ -19,14 +19,14 @@ action() {
 	local RKD_LATEST
 	local basename
 	local tarball
-	local version
+	local VERSION
 
 	# Prepare environment for a reproducible tarball
 	LC_ALL=C.UTF-8
 	SOURCE_DATE_EPOCH="$(git log -1 --pretty=format:%at)"
 
-	# Set a version if none was specified explicitly
-	## defaulte to the latest GitHub RAKUDO release, as long as "latest" matches something like 2020.08 or 2020.08.1
+	# Set a VERSION if none was specified explicitly
+	## defaults to the latest GitHub RAKUDO release, as long as "latest" matches something like 2020.08 or 2020.08.1
 	## takes YEAR.month else, so something like 2020.08
 	if [[ "$(curl -s https://github.com/rakudo/rakudo/releases/latest)" =~ /tag/([0-9]+.[0-9]+)(.[0-9]+) ]]
 	then
@@ -34,8 +34,8 @@ action() {
 	else
 		RKD_LATEST="$(datetime %Y.%m)"
 	fi
-	version="${1:-$RKD_LATEST}"
-	WORKDIR="$BASEDIR/tmp/rakudo-star-$version"
+	VERSION="${1:-$RKD_LATEST}"
+	WORKDIR="$BASEDIR/tmp/rakudo-star-$VERSION"
 
 	debug "SOURCE_DATE_EPOCH set to $SOURCE_DATE_EPOCH"
 
@@ -66,7 +66,7 @@ action() {
 	# Tar it all up into a distribution tarball
 	info "Creating tarball out of $WORKDIR"
 
-	basename="rakudo-star-$version"
+	basename="rakudo-star-$VERSION"
 	tarball="$BASEDIR/dist/$basename.tar.gz"
 
 	mkdir -p -- "$(dirname "$tarball")"
