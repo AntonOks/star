@@ -110,9 +110,9 @@ dist_include() {
 }
 
 dist_checksum() {
-    printf "%-6s  %s\n" \
-        "$1" \
-        "$("dist_checksum_$1" "$2")"
+	printf "%-6s  %s\n" \
+		"$1" \
+		"$("dist_checksum_$1" "$2")"
  }
 
 dist_checksum_md5() {
