@@ -93,7 +93,7 @@ Select-String -Path rakudo-star-modules.txt -Pattern " http "," git " -SimpleMat
   $moduleName = $moduleName.replace("-","::")
   Write-Host "   INFO - zef: installing $moduleName, $moduleUrl"
   IF ( $moduleName -ne "zef" ) {
-    IF ( [string]( & zef install $moduleName --install-to=$PrefixPath\share\perl6\site\ --error ) -match 'No candidates found matching identity' ) { & zef install $moduleUrl --install-to=$PrefixPath\share\perl6\site\ --error }
+    IF ( [string]( & zef install $moduleName --install-to=$PrefixPath\share\perl6\site\ --error --force-test) -match 'No candidates found matching identity' ) { & zef install $moduleUrl --install-to=$PrefixPath\share\perl6\site\ --error --force-test}
   }
 }
 
