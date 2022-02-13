@@ -90,7 +90,7 @@ action() {
 		dist_checksum "$sum" "$tarball" >> "$tarball.checksums.txt"
 	done
 	
-	sha256sum "$tarball" > "$tarball.sha256.checksum.txt"
+	sha256sum "$tarball" | while read SHA256 TARPATH; do echo "$SHA256 $(basename $TARPATH)"; done > "$tarball.sha256.checksum.txt"
 
 	info "Generating a PGP signature for $tarball"
 	gpg --armor --detach-sign --output "$tarball.asc" "$tarball"
