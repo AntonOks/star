@@ -90,7 +90,7 @@ action() {
 		dist_checksum "$sum" "$tarball" >> "$tarball.checksums.txt"
 	done
 	
-	dist_checksum_sha256 "$tarball" >> "$tarball.sha256.checksum.txt"
+	sha256sum "$tarball" > "$tarball.sha256.checksum.txt"
 
 	info "Generating a PGP signature for $tarball"
 	gpg --armor --detach-sign --output "$tarball.asc" "$tarball"
@@ -114,12 +114,6 @@ dist_checksum() {
         "$1" \
         "$("dist_checksum_$1" "$2")"
  }
-
-dist_checksum_sha256() {
-	printf "%s  %s\n" \
-		"$("dist_checksum_sha256" "$1")" \
-		"$1"
-}
 
 dist_checksum_md5() {
 	md5sum "$1" | awk '{print $1}'

@@ -125,7 +125,7 @@ Write-Host "   INFO - .msi Package `"$msiBinFile`" created"
 # SHA256, create a hash sum 
 Write-Host "   INFO - Creating the checksum file `"$msiChecksumFile`""
 # & CertUtil -hashfile "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi" SHA256 | findstr /V ":" > "Windows\rakudo-star-$RAKUDO_VER-win-x86_64-msvc.msi.sha256.txt"
-Write-Host -NoNewline (Get-FileHash -Path $msiBinFile -Algorithm SHA256).Hash $msiBinFile *> $msiChecksumFile
+Write-Host -NoNewline (Get-FileHash -Path $msiBinFile -Algorithm SHA256).Hash ($msiBinFile).Split("\")[-1] *> $msiChecksumFile
 
 
 # GPG signature
