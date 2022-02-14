@@ -47,6 +47,9 @@ jobs:
         git config --global user.email 'anton.oks@gmx.de'
         git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle'
         git push --tags
+        gh auth status
+        gh repo list
+        gh workflow list
         gh workflow run 'Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)' --ref ${{steps.rakudo-release.outputs.release}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
