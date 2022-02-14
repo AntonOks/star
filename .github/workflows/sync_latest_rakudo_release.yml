@@ -50,6 +50,6 @@ jobs:
         gh auth status
         gh repo list
         gh workflow list
-        gh workflow run 'Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)' --ref ${{steps.rakudo-release.outputs.release}}
+        gh workflow run 19846380 --ref ${{steps.rakudo-release.outputs.release}}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
