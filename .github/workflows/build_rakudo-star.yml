@@ -13,6 +13,7 @@ jobs:
   build_Rakudo-Star_Windows_MSI_package:
     # Windows-latest has almost all requirements to build rakudo-star-win
     runs-on: windows-latest
+    if: startsWith(github.ref, 'refs/tags/2')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -32,6 +33,7 @@ jobs:
           
   build_Rakudo-Star_Linux_source:
     runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/2')
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -62,6 +64,9 @@ jobs:
     needs: [build_Rakudo-Star_Windows_MSI_package, build_Rakudo-Star_Linux_source]
     runs-on: ubuntu-latest
     steps:
+    - name: Get the TAG out of the GitHub refs
+      run: |
+        MYTAG=$(basename ${{ github.ref }} )
     - uses: actions/download-artifact@v2
       with:
         path: Rakudo-Star_artifacts
@@ -77,6 +82,7 @@ jobs:
       with:
         # ncipollo/release-action needs a tag! Either a usual "GIT TAG" or an dedicated TAG, see below!
         #tag: 2021.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
+        tag: $MYTAG
         draft: true
         allowUpdates: true
         artifactErrorsFailBuild: true
