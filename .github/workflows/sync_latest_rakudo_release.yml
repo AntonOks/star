@@ -45,7 +45,7 @@ jobs:
       run: |
         git config --global user.name 'AntonOks'
         git config --global user.email 'anton.oks@gmx.de'
-        git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle'
+        git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle' -m "Changes are documented in https://github.com/rakudo/rakudo/releases/tag/${{steps.rakudo-release.outputs.release}}"
         git push --tags
       env:
         GITHUB_TOKEN: ${{ secrets.RAKUDO_SYNC }}
