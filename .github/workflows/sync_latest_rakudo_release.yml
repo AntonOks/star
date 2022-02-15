@@ -53,6 +53,9 @@ jobs:
     - name: Publish latest Rakudo Star release (via gh cli)
       if: steps.update-star-release.outputs.update_star_release
       run: |
+        echo ${{ secrets.RAKUDO_SYNC }} > .github_RAKUDO_SYNC_TOKEN
+        gh auth login --with-token < .github_RAKUDO_SYNC_TOKEN
+        rm .github_RAKUDO_SYNC_TOKEN
         gh auth status
         gh repo list
         gh workflow list
