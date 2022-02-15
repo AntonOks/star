@@ -40,16 +40,22 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Publish latest Rakudo Star release
+    - name: Publish latest Rakudo Star release (via git)
       if: steps.update-star-release.outputs.update_star_release
       run: |
         git config --global user.name 'AntonOks'
         git config --global user.email 'anton.oks@gmx.de'
         git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle'
         git push --tags
+      env:
+        GITHUB_TOKEN: ${{ secrets.RAKUDO_SYNC }}
+        
+    - name: Publish latest Rakudo Star release (via gh cli)
+      if: steps.update-star-release.outputs.update_star_release
+      run: 
         gh auth status
         gh repo list
         gh workflow list
-        gh workflow run 19846380 --ref ${{steps.rakudo-release.outputs.release}}
+        gh workflow run "Synchronize Rakudo Star with the latest Rakudo release" --ref ${{steps.rakudo-release.outputs.release}}
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.RAKUDO_SYNC }}
