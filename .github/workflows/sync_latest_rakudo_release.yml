@@ -36,7 +36,7 @@ jobs:
 
     - name: Checkout Rakudo Star repository
       if: steps.update-star-release.outputs.update_star_release
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -48,12 +48,12 @@ jobs:
         git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle' -m "Changes are documented in https://github.com/rakudo/rakudo/releases/tag/${{steps.rakudo-release.outputs.release}}"
         git push --tags
       env:
-        GITHUB_TOKEN: ${{ secrets.RAKUDO_SYNC }}
+        GITHUB_TOKEN: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
         
     - name: Publish latest Rakudo Star release (via gh cli)
       if: steps.update-star-release.outputs.update_star_release
       run: |
-        echo ${{ secrets.RAKUDO_SYNC }} > .github_RAKUDO_SYNC_TOKEN
+        echo ${{ secrets.ACTIONS_RAKUDO_SYNC }} > .github_RAKUDO_SYNC_TOKEN
         gh auth login --with-token < .github_RAKUDO_SYNC_TOKEN
         rm .github_RAKUDO_SYNC_TOKEN
         gh auth status
@@ -61,4 +61,4 @@ jobs:
         gh workflow list
         gh workflow run "Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)" --ref ${{steps.rakudo-release.outputs.release}}
       env:
-        GITHUB_TOKEN: ${{ secrets.RAKUDO_SYNC }}
+        GITHUB_TOKEN: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
