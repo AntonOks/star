@@ -4,10 +4,10 @@
 ## Actually this here triggers the other build Action by adding a new TAG (Rakudo releases are having TAGs)
 ## TODO: switch to env vars later
 
-name: Synchronize Rakudo Star with the latest Rakudo release
+name: Synchronize Rakudo Star with the latest Rakudo release version
 
 on:
-  schedule:
+  schedule: # Mondays and Thursdays, at 23:55 UTC
     - cron:  '55 23 * * 1,4'
   workflow_dispatch:
 
@@ -16,18 +16,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get the latest Rakudo release version
+    - name: Check the latest Rakudo release version
       id: rakudo-release
       run: echo ::set-output name=release::$(curl -s https://github.com/rakudo/rakudo/releases/latest | grep -Po "releases/tag/(\d+\.\d+.+)" | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
 
-    - name: Get the latest Rakudo Star release version
+
+
+    - name: Check the latest Rakudo Star release version
       id: star-release
-      run: echo ::set-output name=release::$(curl -s https://github.com/rakudo/star/releases/latest | grep -Po "releases/tag/(\d+\.\d+.+)" | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
+      run: echo ::set-output name=release::$(curl -s https://github.com/AntonOks/star/releases/latest | grep -Po "releases/tag/(\d+\.\d+.+)" | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
 
     - name: Show the found Rakudo releases
       run: |
-        echo "Rakudo latest is: ${{steps.rakudo-release.outputs.release}}"
-        echo "Rakudo Star latest is: ${{steps.star-release.outputs.release}}"
+        echo "Rakudo latest is: ${{ steps.rakudo-release.outputs.release }}"
+        echo "Rakudo Star latest is: ${{ steps.star-release.outputs.release }}"
 
     - name: Compare the latest Rakudo and Rakudo Star releases
       id: update-star-release
@@ -38,27 +40,19 @@ jobs:
       if: steps.update-star-release.outputs.update_star_release
       uses: actions/checkout@v3
       with:
+        token: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
         fetch-depth: 0
+        ref: ${{ github.head_ref }}
 
-    - name: Publish latest Rakudo Star release (via git)
+    - name: Write the Release version
       if: steps.update-star-release.outputs.update_star_release
       run: |
-        git config --global user.name 'AntonOks'
-        git config --global user.email 'anton.oks@gmx.de'
-        git tag -a ${{steps.rakudo-release.outputs.release}} -m 'Following the https://github.com/rakudo/rakudo/ release cycle' -m "Changes are documented in https://github.com/rakudo/rakudo/releases/tag/${{steps.rakudo-release.outputs.release}}"
-        git push --tags
-      env:
-        GITHUB_TOKEN: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
-        
-    - name: Publish latest Rakudo Star release (via gh cli)
+        echo "${{ steps.rakudo-release.outputs.release }}" > RELEASE
+
+    - name: Publish latest Rakudo Star release
       if: steps.update-star-release.outputs.update_star_release
-      run: |
-        echo ${{ secrets.ACTIONS_RAKUDO_SYNC }} > .github_RAKUDO_SYNC_TOKEN
-        gh auth login --with-token < .github_RAKUDO_SYNC_TOKEN
-        rm .github_RAKUDO_SYNC_TOKEN
-        gh auth status
-        gh repo list
-        gh workflow list
-        gh workflow run "Build Rakudo Star Releases (Windows MSI and Linux RSTAR source)" --ref ${{steps.rakudo-release.outputs.release}}
-      env:
-        GITHUB_TOKEN: ${{ secrets.ACTIONS_RAKUDO_SYNC }}
+      uses: EndBug/add-and-commit@v8
+      with:
+        message: "Following the https://github.com/rakudo/rakudo/ release cycle"
+        tag: "${{ steps.rakudo-release.outputs.release }}"
+        push: "true"
