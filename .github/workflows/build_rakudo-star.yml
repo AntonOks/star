@@ -65,8 +65,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Get the TAG out of the GitHub refs
+      id: get-tag
       run: |
-        MYTAG=$(basename ${{ github.ref }} )
+        echo ::set-output name=MYTAG::$(basename ${{ github.ref }} )
+        echo "my found release tag is ${{ steps.get-tag.outputs.MYTAG }}"
     - uses: actions/download-artifact@v2
       with:
         path: Rakudo-Star_artifacts
@@ -82,7 +84,7 @@ jobs:
       with:
         # ncipollo/release-action needs a tag! Either a usual "GIT TAG" or an dedicated TAG, see below!
         #tag: 2021.06 # set a TAG if you want a release to be build on GitHub _BUT_ do not provide a GIT TAG
-        tag: $MYTAG
+        tag: ${{ steps.get-tag.outputs.MYTAG }}
         draft: true
         allowUpdates: true
         artifactErrorsFailBuild: true
