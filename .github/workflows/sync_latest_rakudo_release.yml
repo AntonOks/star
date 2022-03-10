@@ -47,7 +47,7 @@ jobs:
     - name: Write the Release version
       if: steps.update-star-release.outputs.update_star_release
       run: |
-        echo "${{ steps.rakudo-release.outputs.release }}" > RELEASE
+        echo "${{ steps.rakudo-release.outputs.release }} ===> $(date)" > RELEASE
 
     - name: Publish latest Rakudo Star release
       if: steps.update-star-release.outputs.update_star_release
