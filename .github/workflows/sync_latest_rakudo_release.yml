@@ -4,7 +4,7 @@
 ## Actually this here triggers the other build Action by adding a new TAG (Rakudo releases are having TAGs)
 ## TODO: switch to env vars later
 
-name: Synchronize Rakudo Star with the latest Rakudo release version
+name: Synchronize Rakudo Star with the latest Rakudo release
 
 on:
   schedule: # Mondays and Thursdays, at 23:55 UTC
@@ -19,8 +19,6 @@ jobs:
     - name: Check the latest Rakudo release version
       id: rakudo-release
       run: echo ::set-output name=release::$(curl -s https://github.com/rakudo/rakudo/releases/latest | grep -Po "releases/tag/(\d+\.\d+.+)" | grep -Po "(\d+\.\d+)(\\.[0-9]+)?")
-
-
 
     - name: Check the latest Rakudo Star release version
       id: star-release
